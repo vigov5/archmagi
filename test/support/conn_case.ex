@@ -1,4 +1,4 @@
-defmodule LiveViewDemoWeb.ConnCase do
+defmodule ArchmagiWeb.ConnCase do
   @moduledoc """
   This module defines the test case to be used by
   tests that require setting up a connection.
@@ -19,20 +19,14 @@ defmodule LiveViewDemoWeb.ConnCase do
     quote do
       # Import conveniences for testing with connections
       use Phoenix.ConnTest
-      alias LiveViewDemoWeb.Router.Helpers, as: Routes
+      alias ArchmagiWeb.Router.Helpers, as: Routes
 
       # The default endpoint for testing
-      @endpoint LiveViewDemoWeb.Endpoint
+      @endpoint ArchmagiWeb.Endpoint
     end
   end
 
-  setup tags do
-    :ok = Ecto.Adapters.SQL.Sandbox.checkout(LiveViewDemo.Repo)
-
-    unless tags[:async] do
-      Ecto.Adapters.SQL.Sandbox.mode(LiveViewDemo.Repo, {:shared, self()})
-    end
-
+  setup _tags do
     {:ok, conn: Phoenix.ConnTest.build_conn()}
   end
 end

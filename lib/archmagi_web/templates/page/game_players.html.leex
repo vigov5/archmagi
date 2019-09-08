@@ -1,0 +1,9 @@
+<%= for player <- @game.players do %>
+  <div class="columns">
+    <div class="column">
+      <%= if player.name == @player_name do %>
+      <button class="button is-info" phx-click="get_ready" phx-value="<%= player.name %>">Ready</button>
+      <% end %>
+    </div>
+  </div>
+<% end %>

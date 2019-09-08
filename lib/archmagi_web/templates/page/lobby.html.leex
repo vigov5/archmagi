@@ -1,0 +1,12 @@
+<div class="columns">
+  <div class="column">
+    <button class="button is-info" phx-click="create_game" phx-value="<%= @player_name %>">Create + Join</button>
+  </div>
+</div>
+<div class="columns is-multiline is-mobile">
+  <%= for game <- @available_games do %>
+    <div class="column is-one-fifth">
+      <button class="button is-info" phx-click="join_game" phx-value="<%= game.id %>">Join - <%= game.id %></button>
+    </div>
+  <% end %>
+</div>

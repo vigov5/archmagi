@@ -1,0 +1,13 @@
+<div class="columns">
+  <div class="column">
+    <p class="subtitle">Status: <%= @game.status %></p>
+  </div>
+</div>
+<%= case @game.status do %>
+  <% "playing" -> %>
+    <%= ArchmagiWeb.PageView.render("game_playing.html", assigns) %>
+  <% "waiting" -> %>
+    <%= ArchmagiWeb.PageView.render("game_players.html", assigns) %>
+  <% "finished" -> %>
+    <%= ArchmagiWeb.PageView.render("game_finished.html", assigns) %>
+<% end %>
