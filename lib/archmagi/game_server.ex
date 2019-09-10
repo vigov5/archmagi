@@ -22,6 +22,8 @@ defmodule Archmagi.GameServer do
   def add_player(id, player, liveview_pid),
     do: try_call(id, {:add_player, player, liveview_pid})
 
+  def set_ready(id, player_name), do: try_call(id, {:set_ready, player_name})
+
   # Server (callbacks)
 
   def init(default) do
@@ -30,6 +32,16 @@ defmodule Archmagi.GameServer do
 
   def handle_call(:get_data, _from, %Game{} = game) do
     {:reply, game, game}
+  end
+
+  def handle_call({:set_ready, player_name}, _from, game) do
+    game = Game.set_ready(game, player_name)
+    game =
+      case Game.all_players_ready?(game) do
+        true -> Game.change_status(game, "playing")
+        _ -> game
+      end
+    {:reply, {:ok, game}, game}
   end
 
   def handle_call({:add_player, %Player{} = player, liveview_pid}, _from, %Game{} = game) do
@@ -45,6 +57,8 @@ defmodule Archmagi.GameServer do
       {:started, true} -> {:reply, {:error, "Game has already started"}, game}
     end
   end
+
+  # Server (helpers)
 
   def handle_info({:DOWN, _ref, :process, pid, reason}, state) do
     Logger.debug("Player #{inspect(pid)} left with reason #{inspect(reason)}!")

@@ -11,7 +11,6 @@ defmodule Archmagi.Application do
       # Start the endpoint when the application starts
       ArchmagiWeb.Endpoint,
       Archmagi.DynamicSupervisor
-      # Archmagi.LiveMonitor
       # Starts a worker by calling: Archmagi.Worker.start_link(arg)
       # {Archmagi.Worker, arg},
     ]

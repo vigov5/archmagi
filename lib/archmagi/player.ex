@@ -2,15 +2,33 @@ defmodule Archmagi.Player do
   @moduledoc """
   Module used to define a player for a Archmagi
   """
-  defstruct name: "", points: 0, waiting_response: false
+  defstruct name: "",
+            ready: false,
+            quary: 0,
+            bricks: 0,
+            magic: 0,
+            gems: 0,
+            dungeon: 0,
+            recruits: 0
+
+  @product_rate 1
+  @base_resource 15
 
   @doc """
   Returns a `Archmagi.Player` struct with the name populated.
   ## Examples:
       iex> Archmagi.Player.new("Ruben")
-      %Archmagi.Player{name: "Ruben", points: 0, waiting_response: false}
+      %Archmagi.Player{name: "Ruben", ready: false}
   """
   def new(name) when is_binary(name) do
-    %__MODULE__{name: name}
+    %__MODULE__{
+      name: name,
+      quary: @product_rate,
+      bricks: @base_resource,
+      magic: @product_rate,
+      gems: @base_resource,
+      dungeon: @product_rate,
+      recruits: @base_resource
+    }
   end
 end

@@ -5,7 +5,6 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
   alias Archmagi.GameServer
   alias Archmagi.Player
   alias Archmagi.DynamicSupervisor, as: GameSupervisor
-  # alias Archmagi.LiveMonitor
 
   require Logger
 
@@ -36,14 +35,40 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
     {:ok, socket}
   end
 
-  def handle_info(%{topic: "games", payload: %{message: message}, event: "updated"}, socket) do
+  # handle broadcasts
+
+  def handle_info(
+        %{topic: "games", payload: %{message: message}, event: "updated"},
+        socket
+      ) do
     {:noreply, assign(socket, available_games: GameSupervisor.current_games(), message: message)}
   end
+
+  def handle_info(%{topic: "games", payload: %{message: message}, event: "stopped"}, socket) do
+    {:noreply,
+     assign(socket, available_games: GameSupervisor.current_games(), message: message, game: nil)}
+  end
+
+  def handle_info(
+        %{
+          topic: "game:" <> game_id,
+          payload: %{message: message, game: game},
+          event: "set_ready"
+        },
+        socket
+      ) do
+    Logger.debug("Event set_ready in game #{game_id} from socket #{socket.assigns.player_name}")
+    {:noreply, assign(socket, message: message, game: game)}
+  end
+
+  # handle liveview
 
   def handle_event("create_game", _value, socket) do
     game_id = "g_#{:rand.uniform(10_000_000_000)}"
     {:ok, game_pid} = Archmagi.DynamicSupervisor.start_child(Game.new(game_id))
+
     Logger.debug("Game created #{inspect(game_pid)}")
+
     add_player(game_id, socket.assigns.player_name, socket)
   end
 
@@ -51,8 +76,19 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
     add_player(game_id, socket.assigns.player_name, socket)
   end
 
-  def handle_event("get_ready", player_name, socket) do
+  def handle_event("set_ready", player_name, socket) do
+    game_id = socket.assigns.game.id
+    {:ok, game} = GameServer.set_ready(game_id, player_name)
+
+    ArchmagiWeb.Endpoint.broadcast("game:#{game_id}", "set_ready", %{
+      message: "Player #{player_name} ready!",
+      game: game
+    })
+
+    {:noreply, assign(socket, :game, game)}
   end
+
+  # logics
 
   def add_player(game_id, player_name, socket) do
     case GameServer.add_player(game_id, Player.new(player_name), self()) do
@@ -60,6 +96,8 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
         ArchmagiWeb.Endpoint.broadcast("games", "updated", %{
           message: "Player #{player_name} joined!"
         })
+
+        ArchmagiWeb.Endpoint.subscribe("game:#{game_id}")
 
         {:noreply, assign_game(socket, game)}
 
@@ -85,7 +123,7 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
 
       game ->
         GameSupervisor.stop_game(game.id)
-        ArchmagiWeb.Endpoint.broadcast("games", "updated", %{message: "Game stopped!"})
+        ArchmagiWeb.Endpoint.broadcast("games", "stopped", %{message: "Game stopped!"})
     end
   end
 end
