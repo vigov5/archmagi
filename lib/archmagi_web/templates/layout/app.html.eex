@@ -10,6 +10,13 @@
   <body>
     <header>
       <section class="container">
+      <%= if @current_user do %>
+        User: <%= @current_user.email %>
+        <span><%= link "Sign out", to: Routes.pow_session_path(@conn, :delete), method: :delete %></span>
+      <% else %>
+        <span><%= link "Register", to: Routes.pow_registration_path(@conn, :new) %></span>
+        <span><%= link "Sign in", to: Routes.pow_session_path(@conn, :new) %></span>
+      <% end %>
         <nav role="navigation">
           <ul>
             <li><a href="https://hexdocs.pm/phoenix/overview.html">Get Started</a></li>

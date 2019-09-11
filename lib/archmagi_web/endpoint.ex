@@ -44,5 +44,7 @@ defmodule ArchmagiWeb.Endpoint do
     key: "_archmagi_key",
     signing_salt: "CUeT2tG7"
 
+  plug Pow.Plug.Session, otp_app: :archmagi
+
   plug ArchmagiWeb.Router
 end

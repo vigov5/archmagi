@@ -7,6 +7,9 @@
 # General application configuration
 use Mix.Config
 
+config :archmagi,
+  ecto_repos: [Archmagi.Repo]
+
 # Configures the endpoint
 config :archmagi, ArchmagiWeb.Endpoint,
   url: [host: "localhost"],
@@ -26,6 +29,10 @@ config :archmagi, ArchmagiWeb.Endpoint,
   live_view: [
     signing_salt: "KM7DSyfjOE/paWZNqmMKsLyH4HhHNFDs"
   ]
+
+config :archmagi, :pow,
+  user: Archmagi.Users.User,
+  repo: Archmagi.Repo
 
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
