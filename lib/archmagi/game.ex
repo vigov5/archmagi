@@ -48,4 +48,9 @@ defmodule Archmagi.Game do
   def all_players_ready?(%Game{players: players}) do
     Enum.all?(players, fn {_, p} -> p.ready end)
   end
+
+  def get_ordered_players(game, player_name) do
+    [{_, you}] = Enum.filter(game.players, fn {k, _} -> k != player_name end)
+    {game.players[player_name], you}
+  end
 end

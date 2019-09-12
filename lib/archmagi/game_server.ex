@@ -37,10 +37,14 @@ defmodule Archmagi.GameServer do
   def handle_call({:set_ready, player_name}, _from, game) do
     game = Game.set_ready(game, player_name)
 
-    game = cond do
-      Game.all_players_ready?(game) and Game.is_full?(game) -> Game.change_status(game, "playing")
-      true -> game
-    end
+    game =
+      cond do
+        Game.all_players_ready?(game) and Game.is_full?(game) ->
+          Game.change_status(game, "playing")
+
+        true ->
+          game
+      end
 
     {:reply, {:ok, game}, game}
   end

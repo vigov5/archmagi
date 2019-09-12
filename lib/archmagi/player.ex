@@ -4,6 +4,8 @@ defmodule Archmagi.Player do
   """
   defstruct name: "",
             ready: false,
+            tower: 0,
+            wall: 0,
             quary: 0,
             bricks: 0,
             magic: 0,
@@ -11,6 +13,8 @@ defmodule Archmagi.Player do
             dungeon: 0,
             recruits: 0
 
+  @wall 10
+  @tower 25
   @product_rate 1
   @base_resource 15
 
@@ -23,6 +27,8 @@ defmodule Archmagi.Player do
   def new(name) when is_binary(name) do
     %__MODULE__{
       name: name,
+      tower: @tower,
+      wall: @wall,
       quary: @product_rate,
       bricks: @base_resource,
       magic: @product_rate,
