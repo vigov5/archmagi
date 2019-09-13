@@ -8,8 +8,12 @@ defmodule Archmagi.Game do
             number_of_players: 0,
             turn_player: nil
 
+  import Ecto.Query, warn: false
   alias Archmagi.Game
   alias Archmagi.Player
+  alias Archmagi.Repo
+  alias Archmagi.Decks
+  alias Archmagi.Users.User
 
   def new(game_id) do
     %Game{id: game_id, status: "waiting"}
@@ -23,6 +27,7 @@ defmodule Archmagi.Game do
         %Game{players: players, number_of_players: number_of_players} = game,
         %Player{} = player
       ) do
+    # TODO allow select deck
     %Game{
       game
       | players: Map.put(players, player.name, player),
@@ -42,7 +47,22 @@ defmodule Archmagi.Game do
   def change_status(game, new_status), do: %{game | status: new_status}
 
   def set_ready(game, player_name) do
-    put_in(game, [Access.key(:players), player_name, Access.key(:ready)], true)
+    deck =
+      Archmagi.Repo.get!(User, game.players[player_name].id)
+      |> Ecto.assoc(:decks)
+      |> Repo.all()
+      |> List.first()
+
+    {hand, cards} =
+      deck
+      |> Decks.parse_cards()
+      |> Enum.shuffle()
+      |> Enum.split(6)
+
+    game
+    |> put_in([Access.key(:players), player_name, Access.key(:ready)], true)
+    |> put_in([Access.key(:players), player_name, Access.key(:deck)], cards)
+    |> put_in([Access.key(:players), player_name, Access.key(:hand)], hand)
   end
 
   def all_players_ready?(%Game{players: players}) do

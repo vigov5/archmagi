@@ -3,15 +3,18 @@ defmodule Archmagi.Player do
   Module used to define a player for a Archmagi
   """
   defstruct name: "",
+            id: nil,
             ready: false,
             tower: 0,
             wall: 0,
-            quary: 0,
+            quarry: 0,
             bricks: 0,
             magic: 0,
             gems: 0,
             dungeon: 0,
-            recruits: 0
+            recruits: 0,
+            deck: [],
+            hand: []
 
   @wall 10
   @tower 25
@@ -24,12 +27,13 @@ defmodule Archmagi.Player do
       iex> Archmagi.Player.new("Ruben")
       %Archmagi.Player{name: "Ruben", ready: false}
   """
-  def new(name) when is_binary(name) do
+  def new(id, name) do
     %__MODULE__{
       name: name,
+      id: id,
       tower: @tower,
       wall: @wall,
-      quary: @product_rate,
+      quarry: @product_rate,
       bricks: @base_resource,
       magic: @product_rate,
       gems: @base_resource,

@@ -1,0 +1,32 @@
+<h1>Listing Cards</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Desc</th>
+      <th>Costs</th>
+      <th>Effects</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for card <- @cards do %>
+    <tr>
+      <td><%= card.name %></td>
+      <td><%= card.desc %></td>
+      <td><%= card.costs %></td>
+      <td><%= card.effects %></td>
+
+      <td>
+        <%= link "Show", to: Routes.card_path(@conn, :show, card) %>
+        <%= link "Edit", to: Routes.card_path(@conn, :edit, card) %>
+        <%= link "Delete", to: Routes.card_path(@conn, :delete, card), method: :delete, data: [confirm: "Are you sure?"] %>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Card", to: Routes.card_path(@conn, :new) %></span>

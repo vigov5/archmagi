@@ -32,6 +32,13 @@ defmodule ArchmagiWeb.Router do
     get "/", PageController, :index
   end
 
+  scope "/", ArchmagiWeb do
+    pipe_through [:browser, :protected]
+
+    resources "/decks", DeckController
+    resources "/cards", CardController
+  end
+
   # Other scopes may use custom stacks.
   # scope "/api", ArchmagiWeb do
   #   pipe_through :api

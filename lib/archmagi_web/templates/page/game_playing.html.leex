@@ -3,6 +3,23 @@
   <div class="columns">
     <div class="column">
       <h3><%= player.name %></h3>
+      <div class="row">Quarry: <%= player.quarry %></div>
+      <div class="row">Bricks: <%= player.bricks %></div>
+      <br>
+      <div class="row">Magic: <%= player.magic %></div>
+      <div class="row">Gems: <%= player.gems %></div>
+      <br>
+      <div class="row">Dungeon: <%= player.dungeon %></div>
+      <div class="row">Recruits: <%= player.recruits %></div>
+      <br>
+      <div class="row">Wall: <%= player.wall %></div>
+      <div class="row">Tower: <%= player.tower %></div>
+<%= for card <- @game.players[@player_name].hand do %>
+      <button class="button button-outline">
+        <img width=24 src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/brick-pile.svg") %>">
+        <%= card.name %> (<%= card.desc %>)
+      </button>
+<% end %>
     </div>
   </div>
 <% end %>

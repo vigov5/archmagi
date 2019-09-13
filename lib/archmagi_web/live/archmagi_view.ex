@@ -12,7 +12,7 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
     ArchmagiWeb.PageView.render("archmagi.html", assigns)
   end
 
-  def mount(%{player_name: player_name} = session, socket) do
+  def mount(%{player_name: player_name, player_id: player_id} = session, socket) do
     IO.inspect(session)
 
     if connected?(socket) do
@@ -27,7 +27,8 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
         error: "",
         message: "",
         available_games: GameSupervisor.current_games(),
-        player_name: player_name
+        player_name: player_name,
+        player_id: player_id
       )
 
     {:ok, socket}
@@ -84,11 +85,11 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
     Logger.debug("Game created #{inspect(game_pid)}")
     ArchmagiWeb.Endpoint.broadcast("games", "updated", %{})
 
-    add_player(game_id, socket.assigns.player_name, socket)
+    add_player(game_id, socket)
   end
 
   def handle_event("join_game", game_id, socket) do
-    add_player(game_id, socket.assigns.player_name, socket)
+    add_player(game_id, socket)
   end
 
   def handle_event("set_ready", player_name, socket) do
@@ -105,8 +106,16 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
 
   # logics
 
-  def add_player(game_id, player_name, socket) do
-    case GameServer.add_player(game_id, Player.new(player_name), self()) do
+  def assign_game(socket, game) do
+    socket
+    |> assign(:game, game)
+  end
+
+  def add_player(game_id, socket) do
+    player_name = socket.assigns.player_name
+    player = Player.new(socket.assigns.player_id, player_name)
+
+    case GameServer.add_player(game_id, player, self()) do
       {:ok, game} ->
         ArchmagiWeb.Endpoint.broadcast("game:#{game_id}", "joined", %{
           message: "Player #{player_name} joined!",
@@ -132,7 +141,10 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
 
       game ->
         GameSupervisor.stop_game(game.id)
-        ArchmagiWeb.Endpoint.broadcast("games", "stopped", %{})
+
+        ArchmagiWeb.Endpoint.broadcast("games", "stopped", %{
+          message: "Player quitted, game stopped!"
+        })
     end
   end
 end
