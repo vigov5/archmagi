@@ -3,8 +3,18 @@ defmodule ArchmagiWeb.CardControllerTest do
 
   alias Archmagi.Decks
 
-  @create_attrs %{costs: "some costs", desc: "some desc", effects: "some effects", name: "some name"}
-  @update_attrs %{costs: "some updated costs", desc: "some updated desc", effects: "some updated effects", name: "some updated name"}
+  @create_attrs %{
+    costs: "some costs",
+    desc: "some desc",
+    effects: "some effects",
+    name: "some name"
+  }
+  @update_attrs %{
+    costs: "some updated costs",
+    desc: "some updated desc",
+    effects: "some updated effects",
+    name: "some updated name"
+  }
   @invalid_attrs %{costs: nil, desc: nil, effects: nil, name: nil}
 
   def fixture(:card) do
@@ -75,6 +85,7 @@ defmodule ArchmagiWeb.CardControllerTest do
     test "deletes chosen card", %{conn: conn, card: card} do
       conn = delete(conn, Routes.card_path(conn, :delete, card))
       assert redirected_to(conn) == Routes.card_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.card_path(conn, :show, card))
       end

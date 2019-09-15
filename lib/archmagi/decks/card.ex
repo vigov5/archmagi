@@ -3,10 +3,10 @@ defmodule Archmagi.Decks.Card do
   import Ecto.Changeset
 
   schema "cards" do
-    field :costs, :string
-    field :desc, :string
-    field :effects, :string
-    field :name, :string
+    field(:costs, :string)
+    field(:desc, :string)
+    field(:effects, :string)
+    field(:name, :string)
 
     timestamps()
   end

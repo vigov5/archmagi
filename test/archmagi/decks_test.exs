@@ -6,8 +6,18 @@ defmodule Archmagi.DecksTest do
   describe "cards" do
     alias Archmagi.Decks.Card
 
-    @valid_attrs %{costs: "some costs", desc: "some desc", effects: "some effects", name: "some name"}
-    @update_attrs %{costs: "some updated costs", desc: "some updated desc", effects: "some updated effects", name: "some updated name"}
+    @valid_attrs %{
+      costs: "some costs",
+      desc: "some desc",
+      effects: "some effects",
+      name: "some name"
+    }
+    @update_attrs %{
+      costs: "some updated costs",
+      desc: "some updated desc",
+      effects: "some updated effects",
+      name: "some updated name"
+    }
     @invalid_attrs %{costs: nil, desc: nil, effects: nil, name: nil}
 
     def card_fixture(attrs \\ %{}) do

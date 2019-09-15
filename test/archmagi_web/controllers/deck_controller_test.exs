@@ -75,6 +75,7 @@ defmodule ArchmagiWeb.DeckControllerTest do
     test "deletes chosen deck", %{conn: conn, deck: deck} do
       conn = delete(conn, Routes.deck_path(conn, :delete, deck))
       assert redirected_to(conn) == Routes.deck_path(conn, :index)
+
       assert_error_sent 404, fn ->
         get(conn, Routes.deck_path(conn, :show, deck))
       end

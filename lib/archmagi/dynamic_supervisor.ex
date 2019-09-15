@@ -34,10 +34,8 @@ defmodule Archmagi.DynamicSupervisor do
 
   def current_games do
     __MODULE__
-    |> IO.inspect()
     |> Supervisor.which_children()
     |> Enum.map(&game_data/1)
-    |> IO.inspect()
   end
 
   defp game_data({_id, pid, _type, _modules}) do

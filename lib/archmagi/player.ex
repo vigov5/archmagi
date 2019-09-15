@@ -4,7 +4,7 @@ defmodule Archmagi.Player do
   """
   defstruct name: "",
             id: nil,
-            ready: false,
+            status: "idle",
             tower: 0,
             wall: 0,
             quarry: 0,
@@ -23,9 +23,6 @@ defmodule Archmagi.Player do
 
   @doc """
   Returns a `Archmagi.Player` struct with the name populated.
-  ## Examples:
-      iex> Archmagi.Player.new("Ruben")
-      %Archmagi.Player{name: "Ruben", ready: false}
   """
   def new(id, name) do
     %__MODULE__{

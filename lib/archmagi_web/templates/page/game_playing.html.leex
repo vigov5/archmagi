@@ -1,4 +1,5 @@
 <h1>Main screen: <%= @game.id %></h1>
+<h2>Turn Player: <%= @game.turn_player %></h2>
 <%= for {name, player} <- @game.players do %>
   <div class="columns">
     <div class="column">
@@ -14,12 +15,15 @@
       <br>
       <div class="row">Wall: <%= player.wall %></div>
       <div class="row">Tower: <%= player.tower %></div>
-<%= for card <- @game.players[@player_name].hand do %>
-      <button class="button button-outline">
+      <%= if name == @player_name do %>
+      <%= for {card, index} <- Enum.with_index(@game.players[@player_name].hand) do %>
+      <button class="button button-outline" phx-click="play_card" phx-value="<%= index %>">
         <img width=24 src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/brick-pile.svg") %>">
         <%= card.name %> (<%= card.desc %>)
       </button>
-<% end %>
+      <button class="button button-clear" phx-click="discard_card" phx-value="<%= index %>">Discard</button>
+      <% end %>>
+      <% end %>
     </div>
   </div>
 <% end %>

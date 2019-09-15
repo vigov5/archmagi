@@ -6,8 +6,10 @@ defmodule ArchmagiWeb.DeckController do
   alias Archmagi.Decks.Deck
 
   def index(conn, _params) do
-    decks = Ecto.assoc(conn.assigns.current_user, :decks)
-    |> Repo.all
+    decks =
+      Ecto.assoc(conn.assigns.current_user, :decks)
+      |> Repo.all()
+
     render(conn, "index.html", decks: decks)
   end
 

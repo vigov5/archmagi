@@ -209,6 +209,13 @@ defmodule Archmagi.Decks do
       )
 
     Repo.all(card_query)
+    |> Enum.map(&parse_card_info/1)
     |> Enum.reduce([], fn card, acc -> acc ++ List.duplicate(card, mapping[card.id]) end)
+  end
+
+  def parse_card_info(%{costs: costs, effects: effects} = card) do
+    {costs, []} = Code.eval_string(costs)
+    {effects, []} = Code.eval_string(effects)
+    %{card | costs: costs, effects: effects}
   end
 end
