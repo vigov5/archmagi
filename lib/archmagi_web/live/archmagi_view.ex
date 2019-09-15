@@ -116,14 +116,22 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
     {:noreply, assign(socket, :game, game)}
   end
 
-  def handle_event("play_card", hand_index, socket) do
+  def handle_event(event, hand_index, socket) when event in ["play_card", "discard_card"] do
     game = socket.assigns.game
     player = game.players[socket.assigns.player_name]
 
-    case GameServer.play_card(game.id, player, hand_index) do
+    result =
+      case event do
+        "play_card" -> GameServer.play_card(game.id, player, hand_index)
+        "discard_card" -> GameServer.discard_card(game.id, player, hand_index)
+      end
+
+    case result do
       {:ok, game} ->
+        {play_type, card} = game.last_played_card
+
         ArchmagiWeb.Endpoint.broadcast("game:#{game.id}", "play_card", %{
-          message: "Player #{player.name} played card '#{game.last_played_card.name}'!",
+          message: "Player #{player.name} #{Atom.to_string(play_type)} card '#{card.name}'!",
           game: game
         })
 

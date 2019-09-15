@@ -8,7 +8,7 @@ defmodule Archmagi.Game do
             number_of_players: 0,
             turn_player: nil,
             last_played_card: nil,
-            last_discard_card: nil
+            winner: ''
 
   import Ecto.Query, warn: false
   alias Archmagi.Game
@@ -44,9 +44,6 @@ defmodule Archmagi.Game do
     do: Map.has_key?(players, player.name)
 
   def is_status?(%Game{status: current_status}, status), do: current_status == status
-
-  def change_status(%Game{status: status} = game, _) when status == "playing", do: game
-
   def change_status(game, new_status), do: %{game | status: new_status}
 
   def set_ready(game, player_name) do
@@ -107,7 +104,7 @@ defmodule Archmagi.Game do
           |> do_apply_effects(effects, me, you)
           |> set_player_status(me.name, "done")
 
-        {:ok, %{game | last_played_card: card}}
+        {:ok, %{game | last_played_card: {:played, card}}}
 
       false ->
         {:error, "Not enough resource!"}
@@ -239,5 +236,34 @@ defmodule Archmagi.Game do
       [Access.key(:players), Access.key(player.name)],
       Map.merge(player, new_resources)
     )
+  end
+
+  def is_finished?(%Game{players: players}) do
+    Map.values(players)
+    |> Enum.any?(fn p -> p.tower == 100 || p.tower == 0 end)
+  end
+
+  def get_winner(%Game{players: players}) do
+    [p1, p2] = Map.values(players)
+
+    cond do
+      p1.tower == 100 -> p1
+      p2.tower == 100 -> p2
+      p1.tower == 0 -> p2
+      p2.tower == 0 -> p1
+    end
+  end
+
+  def next_turn(game, current_player_name) do
+    case Game.all_players_status?(game, "done") do
+      true ->
+        game
+        |> Game.set_all_players_status("ready")
+        |> Game.inc_resource()
+        |> Game.switch_turn_player(current_player_name)
+
+      false ->
+        Game.switch_turn_player(game, current_player_name)
+    end
   end
 end

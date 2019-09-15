@@ -1,4 +1,6 @@
 <h1>Main screen: <%= @game.id %></h1>
+<h1>Status : <%= @game.status %></h1>
+<h1>Winner : <%= @game.winner %></h1>
 <h2>Turn Player: <%= @game.turn_player %></h2>
 <%= for {name, player} <- @game.players do %>
   <div class="columns">
@@ -22,7 +24,7 @@
         <%= card.name %> (<%= card.desc %>)
       </button>
       <button class="button button-clear" phx-click="discard_card" phx-value="<%= index %>">Discard</button>
-      <% end %>>
+      <% end %>
       <% end %>
     </div>
   </div>
