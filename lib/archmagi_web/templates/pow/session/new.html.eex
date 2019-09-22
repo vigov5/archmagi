@@ -1,0 +1,31 @@
+
+<div class="mt-24 mx-auto w-full max-w-xs">
+  <%= form_for @changeset, @action, [as: :user, class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"], fn f -> %>
+    <%= if @changeset.action do %>
+    <div class="mb-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-xs" role="alert">
+      <strong class="font-bold">Oops, something went wrong!</strong>
+      <span class="block sm:inline">Please check the errors below.</span>
+    </div>
+    <% end %>
+    <div class="mb-4">
+      <%= label f, Pow.Ecto.Schema.user_id_field(@changeset), class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= text_input f, Pow.Ecto.Schema.user_id_field(@changeset), class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline #{if f.errors[:email], do: "border border-red-500", else: ""}", placeholder: "example@archmagi.com" %>
+      <p class="text-red-500 text-xs italic">
+      <%= error_tag f, Pow.Ecto.Schema.user_id_field(@changeset) %>
+      </p>
+    </div>
+    <div class="mb-6">
+      <%= label f, :password, class: "block text-gray-700 text-sm font-bold mb-2" %>
+      <%= password_input f, :password, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline #{if f.errors[:password], do: "border border-red-500", else: ""}", placeholder: "**********" %>
+      <p class="text-red-500 text-xs italic">
+      <%= error_tag f, :password %>
+      </p>
+    </div>
+    <div class="flex items-center justify-between">
+      <%= submit "Login", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
+      <a href="<%= Routes.pow_registration_path(@conn, :new) %>" class="inline-block align-baseline font-bold text-sm text-blue-500 hover:text-blue-800 tracking-tight" href="#">
+        Don't have account?
+      </a>
+    </div>
+  <% end %>
+</div>

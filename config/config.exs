@@ -34,6 +34,11 @@ config :archmagi, :pow,
   user: Archmagi.Users.User,
   repo: Archmagi.Repo
 
+config :archmagi, :pow,
+  user: Archmagi.Users.User,
+  repo: Archmagi.Repo,
+  web_module: ArchmagiWeb
+
 # Import environment specific config. This must remain at the bottom
 # of this file so it overrides the configuration defined above.
 import_config "#{Mix.env()}.exs"

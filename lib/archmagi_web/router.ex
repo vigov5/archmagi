@@ -35,6 +35,7 @@ defmodule ArchmagiWeb.Router do
   scope "/", ArchmagiWeb do
     pipe_through [:browser, :protected]
 
+    get "/lobby", PageController, :lobby
     resources "/decks", DeckController
     resources "/cards", CardController
   end

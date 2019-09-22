@@ -1,3 +1,25 @@
-<div class="container">
-  <%= Phoenix.LiveView.live_render(@conn, ArchmagiWeb.Live.ArchmagiView, session: %{player_name: @player_name, player_id: @player_id}) %>
+<div class="h-screen pb-14 bg-right bg-cover">
+  <div class="container pt-16 md:pt-24 px-6 mx-auto flex flex-wrap flex-col md:flex-row items-center">
+    <div class="flex flex-col w-full xl:w-2/5 justify-center lg:items-start overflow-y-hidden">
+      <h1
+        class="my-4 text-4xl md:text-5xl text-purple-800 font-bold leading-tight text-center md:text-left slide-in-bottom-h1">
+        An Online Fantasy Card Game</h1>
+      <p class="leading-normal text-base md:text-2xl mb-8 text-center md:text-left slide-in-bottom-subtitle">
+        inspired by original Arcomage and CastleWars</p>
+      <p class="text-blue-400 font-bold pb-8 lg:pb-6 text-center md:text-left fade-in">
+        <%= if @current_user do %>
+        <%= link "Go to lobby", to: Routes.page_path(@conn, :lobby), class: "bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-b-4 border-green-700 hover:border-green-500 rounded-lg" %>
+        <% else %>
+        <%= link "Login to play", to: Routes.pow_session_path(@conn, :new), class: "bg-blue-500 hover:bg-blue-400 text-white font-bold py-2 px-4 border-b-4 border-blue-700 hover:border-blue-500 rounded-lg" %>
+        <% end %>
+      </p>
+    </div>
+    <div class="w-full xl:w-3/5 py-6 overflow-y-hidden">
+      <img class="w-5/6 mx-auto lg:mr-0 slide-in-bottom"
+        src="https://www.meeplemountain.com/wp-content/uploads/2018/07/orleans-730x411.jpg">
+    </div>
+    <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
+      <a class="text-gray-500 no-underline hover:no-underline" href="#">by vigov5</a>
+    </div>
+  </div>
 </div>

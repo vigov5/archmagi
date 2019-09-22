@@ -11,7 +11,7 @@
     </div>
   </div>
   <%= case @game do %>
-    <% nil -> %> <%= ArchmagiWeb.PageView.render("lobby.html", assigns) %>
+    <% nil -> %> <%= ArchmagiWeb.PageView.render("waiting.html", assigns) %>
     <% _ -> %> <%= ArchmagiWeb.PageView.render("game.html", assigns) %>
   <% end %>
 </div>

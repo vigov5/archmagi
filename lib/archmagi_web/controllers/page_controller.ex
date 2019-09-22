@@ -2,6 +2,10 @@ defmodule ArchmagiWeb.PageController do
   use ArchmagiWeb, :controller
 
   def index(conn, _params) do
+    render(conn, "index.html")
+  end
+
+  def lobby(conn, _params) do
     {player_id, player_name} =
       case Pow.Plug.current_user(conn) do
         nil -> {0, ""}
@@ -11,6 +15,6 @@ defmodule ArchmagiWeb.PageController do
     conn
     |> assign(:player_name, player_name)
     |> assign(:player_id, player_id)
-    |> render("index.html")
+    |> render("lobby.html")
   end
 end
