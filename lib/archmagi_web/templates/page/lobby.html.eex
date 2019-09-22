@@ -1,3 +1,1 @@
-<div class="container">
-  <%= Phoenix.LiveView.live_render(@conn, ArchmagiWeb.Live.ArchmagiView, session: %{player_name: @player_name, player_id: @player_id}) %>
-</div>
+<%= Phoenix.LiveView.live_render(@conn, ArchmagiWeb.Live.ArchmagiView, session: %{player_name: @player_name, player_id: @player_id}) %>

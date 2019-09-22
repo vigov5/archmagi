@@ -266,4 +266,32 @@ defmodule Archmagi.Game do
         Game.switch_turn_player(game, current_player_name)
     end
   end
+
+  def get_players(game) do
+    case game.number_of_players do
+      0 ->
+        [nil, nil]
+
+      1 ->
+        [hd(Map.values(game.players)), nil]
+
+      2 ->
+        Map.keys(game.players)
+        |> Enum.sort()
+        |> Enum.map(&Map.get(game.players, &1))
+    end
+  end
+
+  def get_ratio(%{number_of_players: number_of_players} = game) when number_of_players == 2 do
+    [score1, score2] =
+      get_players(game)
+      |> Enum.map(fn p -> p.tower + p.wall end)
+
+    total = score1 + score2
+
+    [score1, score2]
+    |> Enum.map(fn s -> s / total * 100 end)
+  end
+
+  def get_ratio(_), do: [50, 50]
 end

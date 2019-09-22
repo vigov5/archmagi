@@ -163,6 +163,8 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
           game: game
         })
 
+        ArchmagiWeb.Endpoint.broadcast("games", "updated", %{})
+
         {:noreply, assign(socket, :game, game)}
 
       {:error, reason} ->

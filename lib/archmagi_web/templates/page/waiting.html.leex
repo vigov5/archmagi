@@ -1,13 +1,61 @@
-<div class="columns">
-  <div class="column">
-    User: 
-    <button class="button is-info" phx-click="create_game" phx-value="<%= @player_name %>">Create + Join</button>
+<div class="mx-auto md:max-w-6xl">
+  <div class="text-center mt-4">
+    <button
+      phx-click="create_game" phx-value="<%= @player_name %>"
+      class="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-b-4 border-green-700 hover:border-green-500 rounded-lg">
+      Create & Join Game
+    </button>
   </div>
-</div>
-<div class="columns is-multiline is-mobile">
-  <%= for game <- @available_games do %>
-    <div class="column is-one-fifth">
-      <button class="button is-info" phx-click="join_game" phx-value="<%= game.id %>">Join - <%= game.id %></button>
+  <h1 class="w-full text-center text-2xl border-b-2 mb-2 p-2 border-gray-400">Current Games</h1>
+  <div class="flex items-center flex-wrap justify-around">
+    <%= for game <- @available_games do %>
+    <% [p1, p2] = Archmagi.Game.get_players(game) %>
+    <div
+      class="bg-white w-56 flex flex-col pt-1 pb-2 mx-1 my-2 rounded-lg shadow-2xl border-b-4 border-gray-700 hover:border-gray-500">
+      <div class="text-center pb-1">
+        <span class="font-semibold"><%= game.id %></span>
+      </div>
+      <div class="flex flex-row h-1 mb-2 px-2">
+        <% [r1, r2] = Archmagi.Game.get_ratio(game) %>
+        <div class="border-b-2 border-red-400" style="width:<%= r1 %>%">&nbsp;</div>
+        <div class="border-b-2 border-blue-400" style="width:<%= r2 %>%">&nbsp;</div>
+      </div>
+      <div class="flex px-1">
+        <%= if p1 do %>
+        <div class="flex flex-col w-2/5">
+          <div class="flex justify-center">
+            <img class="rounded-full border border-gray-700 mb-2"
+              src="<%= Archmagi.Player.avatar_url(p1) %>" alt="">
+          </div>
+          <div class="text-center">
+            <%= Archmagi.Player.nick(p1) %>
+          </div>
+        </div>
+        <div class="w-1/5 text-center flex flex-col justify-center">
+          <span class="text-xl font-semibold">vs</span>
+        </div>
+        <% end %>
+        <%= if !p2 do %>
+        <div class="flex flex-col w-2/5 justify-center">
+          <button
+            phx-click="join_game" phx-value="<%= game.id %>"
+            class="bg-blue-500 hover:bg-blue-400 text-white font-bold py-1 mx-2 border-b-4 border-blue-700 hover:border-blue-500 rounded-lg">
+            JOIN
+          </button>
+        </div>
+        <% else %>
+        <div class="flex flex-col w-2/5">
+          <div class="flex justify-center">
+            <img class="rounded-full border border-gray-700 mb-2"
+              src="<%= Archmagi.Player.avatar_url(p2) %>" alt="">
+          </div>
+          <div class="text-center">
+            <%= Archmagi.Player.nick(p2) %>
+          </div>
+        </div>
+        <% end %>
+      </div>
     </div>
-  <% end %>
+    <% end %>
+  </div>
 </div>

@@ -1,0 +1,53 @@
+<div
+  class="mx-auto md:max-w-6xl bg-white lg:max-w-xl md:w-2/3 sm:w-2/3 shadow-2xl border-b-4 border-gray-700 hover:border-gray-500">
+  <div class="mt-24 flex items-center justify-center flex-col">
+    <div class="bg-gray-700 text-white w-full text-center rounded-t-lg p-2">
+      <span class="text-2xl"><%= @game.id %></span>
+    </div>
+    <%= for {_, player} <- @game.players do %>
+    <div class="flex flex-col pt-1 pb-4 mx-1 mt-4 items-start w-full border-b-2">
+      <div class="flex justify-between px-4 w-full items-center">
+        <div class="flex flex-row items-center flex-grow pl-4">
+          <div class="flex justify-center mr-4">
+            <img class="rounded-full border border-gray-700"
+              src="<%= Archmagi.Player.avatar_url(player) %>" alt="">
+          </div>
+          <div cborder-b lass="text-center font-bold">
+            <span class="font-bold"><%= Archmagi.Player.nick(player) %></span>
+          </div>
+        </div>
+        <%= if player.name == @player_name and player.status != "ready" do %>
+        <div class="mr-4 relative">
+          <select
+            class="block appearance-none w-full bg-gray-200 border border-gray-200 text-gray-700 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+            id="grid-state">
+            <option>Default Deck</option>
+            <option>Aggressive Deck</option>
+            <option>Defensive Deck</option>
+          </select>
+          <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+              <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+          </div>
+        </div>
+        <% end %>
+        <div class="border-l-2 pl-4 border-gray-400 w-24">
+          <%= if player.status != "ready" do %>
+          <%= if player.name == @player_name do %>
+          <button
+            phx-click="set_ready" phx-value="<%= player.name %>"
+            class="bg-green-500 hover:bg-green-400 text-white font-bold py-2 px-4 border-b-4 border-green-700 hover:border-green-500 rounded-lg">
+            Ready
+          </button>
+          <% end %>
+          <% else %>
+          <svg class="fill-current h-8 w-8 mx-auto text-green-500" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20">
+            <path d="M0 11l2-2 5 5L18 3l2 2L7 18z" /></svg>
+          <% end %>
+        </div>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

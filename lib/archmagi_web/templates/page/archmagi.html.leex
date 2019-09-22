@@ -1,17 +1,4 @@
-<div class="container">
-  <div class="columns">
-    <div class="column">
-      <p class="subtitle">Player: <%= @player_name %></p>
-    </div>
-    <div class="column">
-      <p class="subtitle">Error: <%= @error %></p>
-    </div>
-    <div class="column">
-      <p class="subtitle">Message: <%= @message %></p>
-    </div>
-  </div>
-  <%= case @game do %>
-    <% nil -> %> <%= ArchmagiWeb.PageView.render("waiting.html", assigns) %>
-    <% _ -> %> <%= ArchmagiWeb.PageView.render("game.html", assigns) %>
-  <% end %>
-</div>
+<%= case @game do %>
+  <% nil -> %> <%= ArchmagiWeb.PageView.render("waiting.html", assigns) %>
+  <% _ -> %> <%= ArchmagiWeb.PageView.render("game.html", assigns) %>
+<% end %>

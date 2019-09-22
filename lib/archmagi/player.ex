@@ -38,4 +38,14 @@ defmodule Archmagi.Player do
       recruits: @base_resource
     }
   end
+
+  def avatar_url(player) do
+    "https://api.adorable.io/avatars/48/#{player.name}.png"
+  end
+
+  def nick(player) do
+    player.name
+    |> String.split("@")
+    |> hd
+  end
 end

@@ -41,6 +41,6 @@ defmodule Archmagi.DynamicSupervisor do
   defp game_data({_id, pid, _type, _modules}) do
     pid
     |> GenServer.call(:get_data)
-    |> Map.take([:id, :players])
+    |> Map.take([:id, :players, :number_of_players, :status, :winner])
   end
 end
