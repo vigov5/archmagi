@@ -240,7 +240,7 @@ defmodule Archmagi.Game do
 
   def is_finished?(%Game{players: players}) do
     Map.values(players)
-    |> Enum.any?(fn p -> p.tower == 100 || p.tower == 0 end)
+    |> Enum.any?(fn p -> p.tower == 100 || p.tower == 0 || Enum.empty?(p.deck) end)
   end
 
   def get_winner(%Game{players: players}) do
@@ -251,6 +251,8 @@ defmodule Archmagi.Game do
       p2.tower == 100 -> p2
       p1.tower == 0 -> p2
       p2.tower == 0 -> p1
+      Enum.empty?(p1.deck) -> p2
+      Enum.empty?(p2.deck) -> p1
     end
   end
 
