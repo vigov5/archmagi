@@ -1,0 +1,48 @@
+<%= if !assigns[:card] do %>
+<div class="flex flex-col h-48 w-32 mx-2 border border-gray-700 rounded-lg bg-yellow-100"></div>
+<% else %>
+
+<% can_play = assigns[:player] && Archmagi.Game.can_play?(@player, @card) %>
+
+<%= if assigns[:index] do %>
+<div
+  <%= if can_play do %>
+  class="flex flex-col h-48 w-32 mx-2"
+  phx-click="play_card" phx-value="<%= @index %>"
+  <% else %>
+  class="flex flex-col h-48 w-32 mx-2 opacity-25"
+  <% end %>
+>
+<% else %>
+<div class="flex flex-col h-48 w-32 mx-2">
+<% end %>
+  <div class="bg-gray-700 text-center text-white rounded-t-lg">
+    <span><%= @card.name %></span>
+  </div>
+  <div class="flex flex-col relative border border-gray-700 rounded-b-lg bg-white flex-grow pt-1">
+    <div>
+      <img class="h-20 w-20 mx-auto rounded-lg bg-cover"
+        src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/cards/#{@card.id}.svg") %>"
+        alt="">
+    </div>
+    <div
+      class="mt-1 mx-2 mb-4 text-center flex-grow bg-white border border-gray-500 flex-grow rounded-sm">
+      <span class="text-xs"><%= @card.desc %></span>
+    </div>
+    <div class="absolute bottom-0 inset-x-0 flex flex-row justify-center">
+      <%= for {resource, price} <- @card.costs do %>
+      <%= case resource do %>
+        <% :bricks -> %>
+          <div class="w-6 h-6 mb-1 text-xs bg-orange-200 text-center rounded-full text-sm border border-orange-400">
+        <% :gems -> %>
+          <div class="w-6 h-6 mb-1 text-xs bg-blue-200 text-center rounded-full text-sm border border-blue-400">
+        <% :recruits -> %>
+          <div class="w-6 h-6 mb-1 text-xs bg-green-200 text-center rounded-full text-sm border border-green-400">
+      <% end %>
+        <%= price %>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>
+<% end %>

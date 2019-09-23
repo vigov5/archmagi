@@ -44,8 +44,7 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
   end
 
   def handle_info(%{topic: "games", payload: %{message: message}, event: "stopped"}, socket) do
-    {:noreply,
-     assign(socket, available_games: GameSupervisor.current_games(), message: message, game: nil)}
+    {:noreply, assign(socket, available_games: GameSupervisor.current_games(), message: message)}
   end
 
   def handle_info(
@@ -131,9 +130,11 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
         {play_type, card} = game.last_played_card
 
         ArchmagiWeb.Endpoint.broadcast("game:#{game.id}", "play_card", %{
-          message: "Player #{player.name} #{Atom.to_string(play_type)} card '#{card.name}'!",
+          message: "Player #{player.name} #{Atom.to_string(play_type)} card \"#{card.name}\"!",
           game: game
         })
+
+        ArchmagiWeb.Endpoint.broadcast("games", "updated", %{})
 
         {:noreply, assign(socket, :game, game)}
 

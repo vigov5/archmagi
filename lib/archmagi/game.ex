@@ -7,7 +7,7 @@ defmodule Archmagi.Game do
             status: '',
             number_of_players: 0,
             turn_player: nil,
-            last_played_card: nil,
+            last_played_card: {:played, nil},
             winner: ''
 
   import Ecto.Query, warn: false

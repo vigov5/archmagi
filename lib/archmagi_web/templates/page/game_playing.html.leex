@@ -1,31 +1,294 @@
-<h1>Main screen: <%= @game.id %></h1>
-<h1>Status : <%= @game.status %></h1>
-<h1>Winner : <%= @game.winner %></h1>
-<h2>Turn Player: <%= @game.turn_player %></h2>
-<%= for {name, player} <- @game.players do %>
-  <div class="columns">
-    <div class="column">
-      <h3><%= player.name %></h3>
-      <div class="row">Quarry: <%= player.quarry %></div>
-      <div class="row">Bricks: <%= player.bricks %></div>
-      <br>
-      <div class="row">Magic: <%= player.magic %></div>
-      <div class="row">Gems: <%= player.gems %></div>
-      <br>
-      <div class="row">Dungeon: <%= player.dungeon %></div>
-      <div class="row">Recruits: <%= player.recruits %></div>
-      <br>
-      <div class="row">Wall: <%= player.wall %></div>
-      <div class="row">Tower: <%= player.tower %></div>
-      <%= if name == @player_name do %>
-      <%= for {card, index} <- Enum.with_index(@game.players[@player_name].hand) do %>
-      <button class="button button-outline" phx-click="play_card" phx-value="<%= index %>">
-        <img width=24 src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/brick-pile.svg") %>">
-        <%= card.name %> (<%= card.desc %>)
-      </button>
-      <button class="button button-clear" phx-click="discard_card" phx-value="<%= index %>">Discard</button>
-      <% end %>
-      <% end %>
+<% [p1, p2] = Archmagi.Game.get_players(@game) %>
+<div class="flew flex-col mx-auto md:max-w-6xl">
+  <div class="flex flex-row bg-gray-200 w-full p-4">
+    <div class="w-1/5 flex flex-col p-2">
+      <div class="flex flex-row items-center justify-start flex-grow bg-white p-2 rounded-lg shadow-md <%= if p1.name == @game.turn_player do 'border-4 border-green-300' else '' end %>">
+        <div class="flex justify-center mr-4 ml-2">
+          <img class="rounded-full border border-gray-700" src="<%= Archmagi.Player.avatar_url(p1) %>"
+            alt="">
+        </div>
+        <div class="flex flex-col justify-start">
+          <div class="text-center font-bold text-2xl">
+            <%= Archmagi.Player.nick(p1) %>
+          </div>
+          <span class="text-xs text-left"><%= length(p1.deck) %> cards</span>
+        </div>
+        <%= if p1.name == @game.winner do %>
+        <div class="flex justify-end flex-grow m-2">
+          <svg class="mt-1 fill-current w-6 text-yellow-400" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20">
+            <path
+              d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+          </svg>
+        </div>
+        <% end %>
+      </div>
+      <div class="flex flex-col">
+        <div class="mt-2 mb-1 mx-2 shadow-md rounded-b-lg">
+          <div
+            class="flex flex-row justify-between items-center bg-orange-200 px-4 py-2 rounded-t-lg border-gray-500 border-b">
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/pickaxe.svg") %>" alt="quarry">
+              </div>
+              <div>Quarry</div>
+            </div>
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p1.quarry %></span>
+            </div>
+          </div>
+          <div class="flex flex-row justify-between items-center bg-orange-200 px-4 py-2 rounded-b-lg ">
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/brickwall.svg") %>" alt="bricks">
+              </div>
+              <div>Bricks</div>
+            </div>
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p1.bricks %></span>
+            </div>
+          </div>
+        </div>
+        <div class="mx-2 my-1 shadow-md rounded-lg">
+          <div
+            class="flex flex-row justify-between items-center bg-blue-200 px-4 py-2 rounded-t-lg border-gray-500 border-b">
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/magic-wand.svg") %>" alt="quarry">
+              </div>
+              <div>Magic</div>
+            </div>
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p1.magic %></span>
+            </div>
+          </div>
+          <div class="flex flex-row justify-between items-center bg-blue-200 px-4 py-2 rounded-b-lg">
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/precious-stone.svg") %>" alt="bricks">
+              </div>
+              <div>Gems</div>
+            </div>
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p1.gems %></span>
+            </div>
+          </div>
+        </div>
+        <div class="mt-1 mb-2 mx-2 shadow-md rounded-b-lg">
+          <div
+            class="flex flex-row justify-between items-center bg-green-200 px-4 py-2 rounded-t-lg border-gray-500 border-b">
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/gate.svg") %>" alt="quarry">
+              </div>
+              <div>Dungeon</div>
+            </div>
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p1.dungeon %></span>
+            </div>
+          </div>
+          <div class="flex flex-row justify-between items-center bg-green-200 px-4 py-2 rounded-b-lg">
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/dragon.svg") %>" alt="bricks">
+              </div>
+              <div>Recruits</div>
+            </div>
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p1.recruits %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="w-3/5 flex flex-col justify-between px-4">
+      <div class="flex flex-col">
+        <span class="rounded-lg bg-yellow-300 border border-gray-500 text-sm p-1 text-center">
+        <%= if @game.status != "finished" do %>
+          <%= @message %>
+        <% else %>
+          The winner is <strong><%= @game.winner %></strong>!
+        <% end %>
+        </span>
+        <% {use_type, last_card} = @game.last_played_card %>
+        <div class="flex fex-row justify-center">
+          <%= for {type, text} <- [discarded: "Discarded", played: "Played"] do %>
+          <div>
+            <div class="text-center text-gray-800">
+              <%= text %>
+            </div>
+            <%= ArchmagiWeb.PageView.render("_card.html", Map.merge(assigns, %{card: if use_type == type do last_card else nil end})) %>
+          </div>
+          <% end %>
+        </div>
+      </div>
+      <div class="flex flex-col w-full">
+        <div class="flex flex-row">
+          <div class="w-1/2 flex flex-row">
+            <div class="flex flex-col justify-end">
+              <div class="relative mx-2 w-24 h-64"
+                style="background-image: url('<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/blue_tower.png") %>');background-position-y: <%= 256 - (2.56 * p1.tower) %>px; background-repeat: no-repeat;">
+                &nbsp;
+                <div class="absolute inset-x-0 top-0 text-center -mt-8 flex justify-center">
+                  <div class="bg-yellow-200 rounded-lg border border-gray-400 p-1 text-sm "><%= p1.tower %>/100</div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col justify-end">
+              <div class="relative mx-2 w-8 h-full"
+                style="background-image: url('<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/blue_wall.png") %>');background-position-y: <%= 256 - (8 * p1.wall/3) %>px; background-repeat: no-repeat;">
+                &nbsp;
+                <div class="absolute inset-x-0 top-0 text-center -mt-8 flex justify-center">
+                  <div class="bg-yellow-200 rounded-lg border border-gray-400 p-1 text-sm "><%= p1.wall %>/60</div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="flex block h-auto text-center">
+
+          </div>
+          <div class="w-1/2 flex flex-row justify-end">
+            <div class="flex flex-col justify-end">
+              <div class="relative mx-2 w-8 h-full"
+                style="background-image: url('<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/brown_wall.png") %>');background-position-y: <%= 256 - (8 * p2.wall/3) %>px; background-repeat: no-repeat;">
+                &nbsp;
+                <div class="absolute inset-x-0 top-0 text-center -mt-8 flex justify-center">
+                  <div class="bg-yellow-200 rounded-lg border border-gray-400 p-1 text-sm "><%= p2.wall %>/60</div>
+                </div>
+              </div>
+            </div>
+            <div class="flex flex-col justify-end">
+              <div class="relative mx-2 w-24 h-64"
+                style="background-image: url('<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/brown_tower.png") %>');background-position-y: <%= 256 - (2.56 * p2.tower) %>px; background-repeat: no-repeat;">
+                &nbsp;
+                <div class="absolute inset-x-0 top-0 text-center -mt-8 flex justify-center">
+                  <div class="bg-yellow-200 rounded-lg border border-gray-400 p-1 text-sm "><%= p2.tower %>/100</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="h-4" style="background-image: url('<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/grass.png") %>');">
+          &nbsp;
+        </div>
+      </div>
+    </div>
+    <div class="w-1/5 flex flex-col p-2">
+      <div class="flex flex-row items-center justify-end flex-grow bg-white p-2 rounded-lg shadow-md <%= if p2.name == @game.turn_player do 'border-4 border-green-300' else '' end %>">
+        <%= if p2.name == @game.winner do %>
+        <div class="flex justify-end flex-grow m-2">
+          <svg class="mt-1 fill-current w-6 text-yellow-400" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 20 20">
+            <path
+              d="M10 15l-5.878 3.09 1.123-6.545L.489 6.91l6.572-.955L10 0l2.939 5.955 6.572.955-4.756 4.635 1.123 6.545z" />
+          </svg>
+        </div>
+        <% end %>
+        <div class="flex flex-col justify-end">
+          <div class="text-center font-bold text-2xl">
+            <%= Archmagi.Player.nick(p2) %>
+          </div>
+          <span class="text-xs text-right"><%= length(p2.deck) %> cards</span>
+        </div>
+        <div class="flex justify-center ml-4 mr-2">
+          <img class="rounded-full border border-gray-700" src="<%= Archmagi.Player.avatar_url(p2) %>"
+            alt="">
+        </div>
+      </div>
+      <div class="flex flex-col">
+        <div class="mt-2 mb-1 mx-2 shadow-md rounded-b-lg">
+          <div
+            class="flex flex-row justify-between items-center bg-orange-200 px-4 py-2 rounded-t-lg border-gray-500 border-b">
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p2.quarry %></span>
+            </div>
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/pickaxe.svg") %>" alt="quarry">
+              </div>
+              <div>Quarry</div>
+            </div>
+          </div>
+          <div class="flex flex-row justify-between items-center bg-orange-200 px-4 py-2 rounded-b-lg ">
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p2.bricks %></span>
+            </div>
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/brickwall.svg") %>" alt="bricks">
+              </div>
+              <div>Bricks</div>
+            </div>
+          </div>
+        </div>
+        <div class="mx-2 my-1 shadow-md rounded-lg">
+          <div
+            class="flex flex-row justify-between items-center bg-blue-200 px-4 py-2 rounded-t-lg border-gray-500 border-b">
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p2.magic %></span>
+            </div>
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/magic-wand.svg") %>" alt="quarry">
+              </div>
+              <div>Magic</div>
+            </div>
+          </div>
+          <div class="flex flex-row justify-between items-center bg-blue-200 px-4 py-2 rounded-b-lg">
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p2.gems %></span>
+            </div>
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/precious-stone.svg") %>" alt="bricks">
+              </div>
+              <div>Gems</div>
+            </div>
+          </div>
+        </div>
+        <div class="mt-1 mb-2 mx-2 shadow-md rounded-b-lg">
+          <div
+            class="flex flex-row justify-between items-center bg-green-200 px-4 py-2 rounded-t-lg border-gray-500 border-b">
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p2.dungeon %></span>
+            </div>
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/gate.svg") %>" alt="quarry">
+              </div>
+              <div>Dungeon</div>
+            </div>
+          </div>
+          <div class="flex flex-row justify-between items-center bg-green-200 px-4 py-2 rounded-b-lg">
+            <div class="w-1/2 p-2 w-10 h-10 text-center flex items-center">
+              <span class="text-2xl mx-auto"><%= p2.recruits %></span>
+            </div>
+            <div class="w-1/2 text-center flex flex-col items-center">
+              <div>
+                <img class="h-6 w-6" src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/dragon.svg") %>" alt="bricks">
+              </div>
+              <div>Recruits</div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
-<% end %>
+  <div class="bg-gray-400 flex flew-row justify-center py-2 rounded-lg border border-gray-500">
+    <%= for {card, index} <- Enum.with_index(@game.players[@player_name].hand) do %>
+    <div class="flex flex-col items-center">
+      <%= ArchmagiWeb.PageView.render("_card.html", Map.merge(assigns, %{card: card, index: index, player: @game.players[@player_name]})) %>
+      <div class="mt-2" phx-click="discard_card" phx-value="<%= index %>">
+        <button
+          class="text-xs py-1 bg-red-400 text-white rounded px-2 inline-flex items-center font-bold hover:bg-red-600">
+          <svg class="mr-1 h-3 w-3 fill-current" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+            <path
+              d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z" />
+          </svg>
+          <span>Discard</span>
+        </button>
+      </div>
+    </div>
+    <% end %>
+  </div>
+</div>

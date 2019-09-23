@@ -1,8 +1,3 @@
-<div class="columns">
-  <div class="column">
-    <p class="subtitle">Status: <%= @game.status %></p>
-  </div>
-</div>
 <%= case @game.status do %>
   <% "playing" -> %>
     <%= ArchmagiWeb.PageView.render("game_playing.html", assigns) %>
