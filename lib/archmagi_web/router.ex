@@ -17,13 +17,25 @@ defmodule ArchmagiWeb.Router do
 
   pipeline :protected do
     plug Pow.Plug.RequireAuthenticated,
-      error_handler: Pow.Phoenix.PlugErrorHandler
+      error_handler: ArchmagiWeb.PlugErrorHandler
+  end
+
+  pipeline :not_authenticated do
+    plug Pow.Plug.RequireNotAuthenticated,
+      error_handler: ArchmagiWeb.AuthErrorHandler
+  end
+
+  scope "/", ArchmagiWeb do
+    pipe_through [:browser, :not_authenticated]
+
+    get "/signup", RegistrationController, :new, as: :signup
+    post "/signup", RegistrationController, :create, as: :signup
+    get "/login", SessionController, :new, as: :login
+    post "/login", SessionController, :create, as: :login
   end
 
   scope "/" do
     pipe_through :browser
-
-    pow_routes()
   end
 
   scope "/", ArchmagiWeb do
@@ -38,6 +50,7 @@ defmodule ArchmagiWeb.Router do
     get "/lobby", PageController, :lobby
     resources "/decks", DeckController
     resources "/cards", CardController
+    delete "/logout", SessionController, :delete, as: :logout
   end
 
   # Other scopes may use custom stacks.
