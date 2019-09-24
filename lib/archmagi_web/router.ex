@@ -17,7 +17,7 @@ defmodule ArchmagiWeb.Router do
 
   pipeline :protected do
     plug Pow.Plug.RequireAuthenticated,
-      error_handler: ArchmagiWeb.PlugErrorHandler
+      error_handler: ArchmagiWeb.AuthErrorHandler
   end
 
   pipeline :not_authenticated do
