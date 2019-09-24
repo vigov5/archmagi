@@ -15,6 +15,7 @@ defmodule Archmagi.Game do
   alias Archmagi.Player
   alias Archmagi.Repo
   alias Archmagi.Decks
+  alias Archmagi.Decks.Deck
   alias Archmagi.Users.User
   require Logger
 
@@ -46,13 +47,8 @@ defmodule Archmagi.Game do
   def is_status?(%Game{status: current_status}, status), do: current_status == status
   def change_status(game, new_status), do: %{game | status: new_status}
 
-  def set_ready(game, player_name) do
-    # TODO allow select deck
-    deck =
-      Archmagi.Repo.get!(User, game.players[player_name].id)
-      |> Ecto.assoc(:decks)
-      |> Repo.all()
-      |> List.first()
+  def set_ready(game, player_name, deck_id) do
+    deck = Archmagi.Repo.get!(Deck, deck_id)
 
     {hand, cards} =
       deck

@@ -2,12 +2,10 @@ defmodule ArchmagiWeb.DeckController do
   use ArchmagiWeb, :controller
   import Phoenix.LiveView.Controller
 
-  alias Archmagi.Repo
+  alias Archmagi.Decks
 
   def index(conn, _params) do
-    decks =
-      Ecto.assoc(conn.assigns.current_user, :decks)
-      |> Repo.all()
+    decks = Decks.decks_of_user(conn.assigns.current_user)
 
     live_render(conn, ArchmagiWeb.Live.ConstructionView,
       session: %{

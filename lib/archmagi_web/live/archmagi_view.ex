@@ -4,6 +4,9 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
   alias Archmagi.Game
   alias Archmagi.GameServer
   alias Archmagi.Player
+  alias Archmagi.Users.User
+  alias Archmagi.Repo
+  alias Archmagi.Decks
   alias Archmagi.DynamicSupervisor, as: GameSupervisor
 
   require Logger
@@ -20,6 +23,9 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
       ArchmagiWeb.Endpoint.subscribe("games")
     end
 
+    user = Repo.get(User, player_id)
+    decks = Decks.decks_of_user(user)
+
     socket =
       socket
       |> assign(
@@ -28,7 +34,9 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
         message: "",
         available_games: GameSupervisor.current_games(),
         player_name: player_name,
-        player_id: player_id
+        player_id: player_id,
+        decks: decks,
+        selected_deck: hd(decks)
       )
 
     {:ok, socket}
@@ -105,7 +113,8 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
 
   def handle_event("set_ready", player_name, socket) do
     game_id = socket.assigns.game.id
-    {:ok, game} = GameServer.set_ready(game_id, player_name)
+    deck_id = socket.assigns.selected_deck.id
+    {:ok, game} = GameServer.set_ready(game_id, player_name, deck_id)
 
     ArchmagiWeb.Endpoint.broadcast("game:#{game_id}", "set_ready", %{
       message: "Player #{player_name} ready!",
@@ -142,6 +151,12 @@ defmodule ArchmagiWeb.Live.ArchmagiView do
         Logger.debug(reason)
         {:noreply, assign(socket, :error, reason)}
     end
+  end
+
+  def handle_event("change_deck", %{"deck" => deck_id}, socket) do
+    selected_deck = Enum.find(socket.assigns.decks, &(&1.id == String.to_integer(deck_id)))
+
+    {:noreply, assign(socket, :selected_deck, selected_deck)}
   end
 
   # logics

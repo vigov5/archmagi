@@ -28,7 +28,7 @@
                 name="<%= card_id %>"
               >
                 <%= for value <- 0..5 do %>
-                <option value"<%= value %>" <%= if value == num do "selected" else "" end %>><%= value %> cards</option>
+                <option value="<%= value %>" <%= if value == num do "selected" else "" end %>><%= value %> cards</option>
                 <% end %>
               </select>
             </form>

@@ -22,7 +22,7 @@ defmodule Archmagi.GameServer do
   def add_player(id, player, liveview_pid),
     do: try_call(id, {:add_player, player, liveview_pid})
 
-  def set_ready(id, player_name), do: try_call(id, {:set_ready, player_name})
+  def set_ready(id, player_name, deck_id), do: try_call(id, {:set_ready, player_name, deck_id})
 
   def play_card(id, player, hand_index), do: try_call(id, {:play_card, player, hand_index})
 
@@ -38,8 +38,8 @@ defmodule Archmagi.GameServer do
     {:reply, game, game}
   end
 
-  def handle_call({:set_ready, player_name}, _from, game) do
-    game = Game.set_ready(game, player_name)
+  def handle_call({:set_ready, player_name, deck_id}, _from, game) do
+    game = Game.set_ready(game, player_name, deck_id)
 
     game =
       cond do

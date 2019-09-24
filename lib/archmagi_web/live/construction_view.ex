@@ -2,7 +2,6 @@ defmodule ArchmagiWeb.Live.ConstructionView do
   use Phoenix.LiveView
 
   alias Archmagi.Decks
-  alias Archmagi.Repo
 
   require Logger
 
@@ -32,7 +31,7 @@ defmodule ArchmagiWeb.Live.ConstructionView do
   end
 
   def handle_event("change_deck", deck_id, socket) do
-    selected_deck = hd(Enum.filter(socket.assigns.decks, &(&1.id == String.to_integer(deck_id))))
+    selected_deck = Enum.find(socket.assigns.decks, &(&1.id == String.to_integer(deck_id)))
     {info, cards} = prepare_deck(selected_deck)
 
     {:noreply, assign(socket, selected_deck: selected_deck, cards: cards, info: info)}
@@ -41,8 +40,6 @@ defmodule ArchmagiWeb.Live.ConstructionView do
   def handle_event("change_num", %{"_target" => [card_id]} = data, socket) do
     new_num =
       data[card_id]
-      |> String.split(" ")
-      |> hd()
       |> String.to_integer()
 
     info = Map.put(socket.assigns.info, String.to_integer(card_id), new_num)
@@ -50,9 +47,7 @@ defmodule ArchmagiWeb.Live.ConstructionView do
     {:ok, new_deck} =
       Decks.update_deck(socket.assigns.selected_deck, %{cards: Jason.encode!(info)})
 
-    decks =
-      Ecto.assoc(socket.assigns.user, :decks)
-      |> Repo.all()
+    decks = Decks.decks_of_user(socket.assigns.user)
 
     {:noreply, assign(socket, info: info, selected_deck: new_deck, decks: decks)}
   end

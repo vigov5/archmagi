@@ -232,4 +232,9 @@ defmodule Archmagi.Decks do
 
     create_deck(user, %{cards: cards, name: name})
   end
+
+  def decks_of_user(user) do
+    Ecto.assoc(user, :decks)
+    |> Repo.all()
+  end
 end
