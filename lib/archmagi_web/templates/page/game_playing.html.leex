@@ -176,7 +176,7 @@
     <div class="w-1/5 flex flex-col p-2">
       <div class="flex flex-row items-center justify-end flex-grow bg-white p-2 rounded-lg shadow-md <%= if p2.name == @game.turn_player do 'border-4 border-green-300' else '' end %>">
         <%= if p2.name == @game.winner do %>
-        <div class="flex justify-end flex-grow m-2">
+        <div class="flex justify-start flex-grow m-2">
           <svg class="mt-1 fill-current w-6 text-yellow-400" xmlns="http://www.w3.org/2000/svg"
             viewBox="0 0 20 20">
             <path
