@@ -218,4 +218,14 @@ defmodule Archmagi.Decks do
     {effects, []} = Code.eval_string(effects)
     %{card | costs: costs, effects: effects}
   end
+
+  def create_default_deck(user, name) do
+    cards =
+      Repo.all(Card)
+      |> Enum.map(&Map.get(&1, :id))
+      |> Enum.reduce(%{}, fn x, acc -> Map.put(acc, x, 2) end)
+      |> Jason.encode!()
+
+    create_deck(user, %{cards: cards, name: name})
+  end
 end
