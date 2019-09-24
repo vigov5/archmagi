@@ -1,0 +1,45 @@
+<div class="flex flex-row mx-auto md:max-w-6xl h-screen">
+  <div class="w-1/5 flex flex-col items-end pr-4">
+    <div class="text-3xl font-bold pt-4 border-b border-gray-900 mb-2 w-full text-right">All Decks</div>
+    <%= for deck <- @decks do %>
+      <button
+        class="text-xl font-semibold <%= if @selected_deck.id == deck.id do 'border-b-2 border-blue-500' else '' end %>"
+        phx-click="change_deck" phx-value="<%= deck.id %>"
+      >
+        <%= deck.name %>
+      </button>
+    <% end %>
+  </div>
+  <div class="w-4/5 pl-4">
+    <div class="pt-4 flex flex-row justify-between">
+      <div class="text-3xl"><%= @selected_deck.name %>
+        <span class="text-sm font-semibold">(<%= Enum.sum(Map.values(@info)) %> cards)</span>
+      </div>
+    </div>
+    <div class="flex flex-row flex-wrap">
+      <%= for {card_id, num} <- @info do %>
+      <div class="p-2">
+        <div>
+          <%= ArchmagiWeb.PageView.render("_card.html", Map.merge(assigns, %{card: @cards[card_id]})) %>
+          <div class="relative p-2">
+            <form phx-change="change_num">
+              <select
+                class="block w-full appearance-none bg-gray-500 border border-gray-200 text-gray-900 py-2 px-4 pr-8 rounded leading-tight focus:outline-none focus:bg-white focus:border-gray-500"
+                name="<%= card_id %>"
+              >
+                <%= for value <- 0..5 do %>
+                <option value"<%= value %>" <%= if value == num do "selected" else "" end %>><%= value %> cards</option>
+                <% end %>
+              </select>
+            </form>
+            <div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-700">
+              <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                <path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z" /></svg>
+            </div>
+          </div>
+        </div>
+      </div>
+      <% end %>
+    </div>
+  </div>
+</div>

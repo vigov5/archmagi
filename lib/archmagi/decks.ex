@@ -198,17 +198,21 @@ defmodule Archmagi.Decks do
     Deck.changeset(deck, %{})
   end
 
-  def parse_cards(deck) do
-    mapping = Jason.decode!(deck.cards, keys: &String.to_integer(&1))
-
+  def all_card_in_ids(ids) do
     card_query =
       from(
         c in Card,
-        where: c.id in ^Map.keys(mapping),
+        where: c.id in ^ids,
         select: c
       )
 
     Repo.all(card_query)
+  end
+
+  def parse_cards(deck) do
+    mapping = Jason.decode!(deck.cards, keys: &String.to_integer(&1))
+
+    all_card_in_ids(Map.keys(mapping))
     |> Enum.map(&parse_card_info/1)
     |> Enum.reduce([], fn card, acc -> acc ++ List.duplicate(card, mapping[card.id]) end)
   end
