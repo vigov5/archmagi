@@ -15,6 +15,10 @@ defmodule ArchmagiWeb.Router do
     plug :accepts, ["json"]
   end
 
+  pipeline :admin do
+    plug ArchmagiWeb.EnsureRolePlug, :admin
+  end
+
   pipeline :protected do
     plug Pow.Plug.RequireAuthenticated,
       error_handler: ArchmagiWeb.AuthErrorHandler
@@ -49,8 +53,13 @@ defmodule ArchmagiWeb.Router do
 
     get "/lobby", PageController, :lobby
     resources "/decks", DeckController
-    resources "/cards", CardController
     delete "/logout", SessionController, :delete, as: :logout
+  end
+
+  scope "/admin", ArchmagiWeb do
+    pipe_through [:browser, :protected, :admin]
+
+    resources "/cards", CardController
   end
 
   # Other scopes may use custom stacks.
