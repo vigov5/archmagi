@@ -1,32 +1,33 @@
-<h1>Listing Cards</h1>
+<div class="mx-auto md:max-w-6xl mt-16">
 
-<table>
-  <thead>
-    <tr>
-      <th>Name</th>
-      <th>Desc</th>
-      <th>Costs</th>
-      <th>Effects</th>
+  <table>
+    <thead>
+      <tr>
+        <th>Name</th>
+        <th>Desc</th>
+        <th>Costs</th>
+        <th>Effects</th>
 
-      <th></th>
-    </tr>
-  </thead>
-  <tbody>
-<%= for card <- @cards do %>
-    <tr>
-      <td><%= card.name %></td>
-      <td><%= card.desc %></td>
-      <td><%= card.costs %></td>
-      <td><%= card.effects %></td>
+        <th></th>
+      </tr>
+    </thead>
+    <tbody>
+  <%= for card <- @cards do %>
+      <tr>
+        <td class="py-4 px-6 border-b border-grey-light"><%= card.name %></td>
+        <td class="py-4 px-6 border-b border-grey-light"><%= card.desc %></td>
+        <td class="py-4 px-6 border-b border-grey-light"><%= card.costs %></td>
+        <td class="py-4 px-6 border-b border-grey-light"><%= card.effects %></td>
 
-      <td>
-        <%= link "Show", to: Routes.card_path(@conn, :show, card) %>
-        <%= link "Edit", to: Routes.card_path(@conn, :edit, card) %>
-        <%= link "Delete", to: Routes.card_path(@conn, :delete, card), method: :delete, data: [confirm: "Are you sure?"] %>
-      </td>
-    </tr>
-<% end %>
-  </tbody>
-</table>
-
-<span><%= link "New Card", to: Routes.card_path(@conn, :new) %></span>
+        <td>
+          <%= link "Show", to: Routes.card_path(@conn, :show, card), class: "bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 mx-1 border border-blue-500 hover:border-transparent rounded" %>
+          <%= link "Edit", to: Routes.card_path(@conn, :edit, card), class: "bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 mx-1 border border-blue-500 hover:border-transparent rounded" %>
+          <%= link "Delete", to: Routes.card_path(@conn, :delete, card), method: :delete, data: [confirm: "Are you sure?"], class: "bg-transparent hover:bg-red-500 text-red-700 font-semibold hover:text-white py-2 px-4 mx-1 border border-red-500 hover:border-transparent rounded" %>
+        </td>
+      </tr>
+  <% end %>
+    </tbody>
+  </table>
+<br>
+<span><%= link "New Card", to: Routes.card_path(@conn, :new), class: "bg-transparent hover:bg-blue-500 text-blue-700 font-semibold hover:text-white py-2 px-4 mx-1 border border-blue-500 hover:border-transparent rounded" %></span>
+</div>

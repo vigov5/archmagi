@@ -1,27 +1,44 @@
-<%= form_for @changeset, @action, fn f -> %>
+<div class="mt-24 mx-auto w-full max-w-xl">
+<%= form_for @changeset, @action, [class: "bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"], fn f -> %>
   <%= if @changeset.action do %>
-    <div class="alert alert-danger">
-      <p>Oops, something went wrong! Please check the errors below.</p>
+    <div class="mb-2 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative text-xs" role="alert">
+      <strong class="font-bold">Oops, something went wrong!</strong>
+      <span class="block sm:inline">Please check the errors below.</span>
     </div>
   <% end %>
-
-  <%= label f, :name %>
-  <%= text_input f, :name %>
+  <div class="mb-4">
+  <%= label f, :name, class: "block text-gray-700 text-sm font-bold mb-2" %>
+  <%= text_input f, :name, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline #{if f.errors[:name], do: "border border-red-500", else: ""}" %>
+  <p class="text-red-500 text-xs italic">
   <%= error_tag f, :name %>
+  </p>
+  </div>
 
-  <%= label f, :desc %>
-  <%= text_input f, :desc %>
+  <div class="mb-4">
+  <%= label f, :desc, class: "block text-gray-700 text-sm font-bold mb-2" %>
+  <%= text_input f, :desc, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline #{if f.errors[:desc], do: "border border-red-500", else: ""}" %>
+  <p class="text-red-500 text-xs italic">
   <%= error_tag f, :desc %>
+  </p>
+  </div>
 
-  <%= label f, :costs %>
-  <%= textarea f, :costs %>
+  <div class="mb-4">
+  <%= label f, :costs, class: "block text-gray-700 text-sm font-bold mb-2" %>
+  <%= textarea f, :costs, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline #{if f.errors[:costs], do: "border border-red-500", else: ""}" %>
+  <p class="text-red-500 text-xs italic">
   <%= error_tag f, :costs %>
+  </p>
+  </div>
 
-  <%= label f, :effects %>
-  <%= textarea f, :effects %>
+  <div class="mb-4">
+  <%= label f, :effects, class: "block text-gray-700 text-sm font-bold mb-2" %>
+  <%= textarea f, :effects, class: "shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline #{if f.errors[:effects], do: "border border-red-500", else: ""}" %>
+  <p class="text-red-500 text-xs italic">
   <%= error_tag f, :effects %>
+  </p>
+  </div>
 
-  <div>
-    <%= submit "Save" %>
+  <div class="flex items-center justify-between">
+    <%= submit "Save", class: "bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline" %>
   </div>
 <% end %>
