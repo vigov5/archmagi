@@ -46,6 +46,7 @@ defmodule ArchmagiWeb.Router do
     pipe_through :browser
 
     get "/", PageController, :index
+    get "/credit", PageController, :credit
   end
 
   scope "/", ArchmagiWeb do

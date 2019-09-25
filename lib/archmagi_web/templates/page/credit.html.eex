@@ -1,0 +1,66 @@
+<div class="mx-auto md:max-w-6xl bg-white border border-gray-400 rounded-lg shadow mt-16">
+  <div class="p-2 sm:p-4 text-gray-700 leading-normal text-base text-center">
+    <p>
+      <h2 class="text-4xl font-bold text-gray-900">Frameworks</h2>
+      <ul class="text-xl">
+        <li>
+          <img class="h-8 inline"
+            src="https://raw.githubusercontent.com/phoenixframework/media/master/badges/poweredby-phoenix-badge3-02.png"
+            alt="phoenix logo"><a href="https://phoenixframework.org/" class="hover:text-blue-400">Phoenix
+            Framework</a>
+          (with <a class="font-semibold hover:text-blue-400"
+            href="https://github.com/phoenixframework/phoenix_live_view"
+            class="hover:text-blue-400">LiveView</a>)
+        </li>
+        <li>
+          <img class="h-8 inline "
+            src="https://pbs.twimg.com/profile_images/895274026783866881/E1G1nNb0_200x200.jpg"
+            alt="tailwind logo">
+          <a href="https://tailwindcss.com/" class="hover:text-blue-400">Tailwind CSS</a>
+        </li>
+        <li>
+          <a class="hover:text-blue-400" href="https://www.tailwindtoolbox.com">Tailwind Toolbox</a>
+        </li>
+      </ul>
+      <h2 class="text-4xl font-bold mt-10 text-gray-900">Icons</h2>
+      <ul class="text-xl">
+        <li>
+          <a class="hover:text-blue-400" href="https://www.zondicons.com/">Zondicons</a> by <a
+            class="font-semibold hover:text-blue-400" href="https://twitter.com/steveschoger">Steve Schoger</a>
+        </li>
+        <li>
+          <div>Icons made by
+            <a class="font-semibold hover:text-blue-400" href="https://www.flaticon.com/authors/good-ware"
+              title="Good Ware">Good
+              Ware</a>, <a class="font-semibold hover:text-blue-400"
+              href="https://www.flaticon.com/authors/freepik" title="Freepik">Freepik</a>
+            from <a class="underline text-blue-400" href="https://www.flaticon.com/"
+              title="Flaticon">www.flaticon.com</a></div>
+        </li>
+      </ul>
+      <h2 class="text-4xl font-bold mt-10 text-gray-900">Arts</h2>
+      <ul class="text-xl">
+        <li>
+          Card arts made by <a class="underline text-blue-400"
+            href="https://game-icons.net/">https://game-icons.net/</a>
+        </li>
+        <li>
+          Sprites by <span class="font-semibold">Bev Bush</span>
+        </li>
+      </ul>
+      <h2 class="text-4xl mt-10 font-bold text-gray-900">Inspirations</h2>
+      <ul class="text-xl">
+        <li>
+          <a class="hover:text-blue-400" href="https://en.wikipedia.org/wiki/Arcomage">Arcomage</a>
+        </li>
+        <li>
+          <a class="underline text-blue-400" href="https://arcomage.net/">arcomage.net</a>
+        </li>
+        <li>
+          <a class="hover:text-blue-400"
+            href="http://www.kongregate.com/games/m0rkeulv/castlewars">CastleWars</a>
+        </li>
+      </ul>
+    </p>
+  </div>
+</div>

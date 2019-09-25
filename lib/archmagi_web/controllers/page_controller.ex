@@ -17,4 +17,8 @@ defmodule ArchmagiWeb.PageController do
     |> assign(:player_id, player_id)
     |> render("lobby.html")
   end
+
+  def credit(conn, _params) do
+    render(conn, "credit.html")
+  end
 end

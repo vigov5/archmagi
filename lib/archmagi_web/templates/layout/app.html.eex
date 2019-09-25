@@ -41,7 +41,7 @@
               <a href="<%= Routes.deck_path(@conn, :index) %>" class="block mt-4 hover:text-teal-400 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
                 Deck Construction
               </a>
-              <a href="#responsive-header" class="block mt-4 hover:text-teal-400 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
+              <a href="<%= Routes.page_path(@conn, :credit) %>" class="block mt-4 hover:text-teal-400 lg:inline-block lg:mt-0 text-white hover:text-white mr-4">
                 Credit
               </a>
             </div>
