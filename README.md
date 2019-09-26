@@ -13,7 +13,8 @@ Note: for development, you'll need Elixir, Erlang and Node.js. If you use the [a
 # TODO
 
 - [ ] Responsive layout
-- [ ] More card effects
+- [ ] More card effects (if-else)
+- [ ] Restrict maximum cards
 
 ## Deployment
 
