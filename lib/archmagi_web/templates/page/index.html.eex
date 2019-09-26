@@ -16,7 +16,7 @@
     </div>
     <div class="w-full xl:w-3/5 py-6 overflow-y-hidden">
       <img class="w-5/6 mx-auto lg:mr-0 slide-in-bottom"
-        src="https://www.meeplemountain.com/wp-content/uploads/2018/07/orleans-730x411.jpg">
+        src="<%= Routes.static_path(ArchmagiWeb.Endpoint, "/images/screenshot.png") %>">
     </div>
     <div class="w-full pt-16 pb-6 text-sm text-center md:text-left fade-in">
       <a class="text-gray-500 no-underline hover:no-underline" href="https://github.com/vigov5/">by vigov5</a>
