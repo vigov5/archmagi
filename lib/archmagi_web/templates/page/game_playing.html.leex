@@ -144,8 +144,16 @@
               </div>
             </div>
           </div>
-          <div class="flex block h-auto text-center">
-
+          <div class="w-0 pt-4 overflow-visible h-auto text-center whitespace-no-wrap flex justify-center">
+            <h1
+              <%= if @player_name == @game.turn_player do %>
+              class="text-2xl font-bold text-blue-500 italic scale-up-center"
+              <% else %>
+              class="hidden"
+              <% end %>
+            >
+              Your Turn
+            </h1>
           </div>
           <div class="w-1/2 flex flex-row justify-end">
             <div class="flex flex-col justify-end">

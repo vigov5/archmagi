@@ -13,10 +13,8 @@ defmodule Archmagi.Game do
   import Ecto.Query, warn: false
   alias Archmagi.Game
   alias Archmagi.Player
-  alias Archmagi.Repo
   alias Archmagi.Decks
   alias Archmagi.Decks.Deck
-  alias Archmagi.Users.User
   require Logger
 
   def new(game_id) do
