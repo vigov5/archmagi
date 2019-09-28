@@ -60,7 +60,8 @@ defmodule Archmagi.MixProject do
         "ecto.create",
         "ecto.migrate",
         "run priv/repo/seed_user.exs",
-        "run priv/repo/seed_cards.exs"
+        "run priv/repo/seed_cards.exs",
+        "run priv/repo/seed_decks.exs"
       ],
       "ecto.reset": ["ecto.drop", "ecto.setup"],
       test: ["ecto.create --quiet", "ecto.migrate", "test"]

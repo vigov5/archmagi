@@ -18,5 +18,3 @@ admin =
   %Archmagi.Users.User{}
   |> Changeset.change(email: "admin@archmagi.com", password_hash: password_hash, role: "admin")
   |> Archmagi.Repo.insert!()
-
-Archmagi.Decks.create_default_deck(admin, "Default Deck")
